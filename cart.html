@@ -38,12 +38,111 @@
   </header>
 
   <main>
-    <!-- TODO: Design proudct list item, shape inspired from bootstrap card-->
-    <!-- bootstrap card: https://getbootstrap.com/docs/5.3/components/card/ -->
+    <div class="container p-3">
+      <div class="row">
+        <div class="col-8 overflow-y-scroll pe-5">
 
-    <!-- TODO: Design product list pagination-->
-    <!-- bootstrap pagination: https://getbootstrap.com/docs/5.3/components/pagination/ -->
+          <h1 class="mb-4">Shopping Cart</h1>
+          <hr>
+          <div class="row mb-4 d-flex justify-content-between align-items-center pb-4 border-bottom">
+            <div class="col-md-2 col-lg-2 col-xl-2">
+              <img
+                src="https://via.placeholder.com/200"
+                class="img-fluid rounded-3" alt="Cotton T-shirt">
+            </div>
+            <div class="col-md-3 col-lg-3 col-xl-3">
+              <h6 class="text-muted">Category</h6>
+              <h6 class="text-black mb-0">Product title</h6>
+            </div>
+            <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+              <button class="btn btn-link px-2"
+                onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                <i class="fas fa-minus"></i>
+              </button>
 
+              <input id="form1" min="0" name="quantity" value="1" type="number"
+                class="form-control form-control-sm text-center" />
+
+              <button class="btn btn-link px-2"
+                onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                <i class="fas fa-plus"></i>
+              </button>
+            </div>
+            <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+              <h6 class="mb-0">$ 44.00</h6>
+            </div>
+            <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+              <a href="#!" class="text-muted"><i class="fas fa-times"></i></a>
+            </div>
+          </div>
+          <div class="row mb-4 d-flex justify-content-between align-items-center pb-4 border-bottom">
+            <div class="col-md-2 col-lg-2 col-xl-2">
+              <img
+                src="https://via.placeholder.com/200"
+                class="img-fluid rounded-3" alt="Cotton T-shirt">
+            </div>
+            <div class="col-md-3 col-lg-3 col-xl-3">
+              <h6 class="text-muted">Category</h6>
+              <h6 class="text-black mb-0">Product title</h6>
+            </div>
+            <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+              <button class="btn btn-link px-2"
+                onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                <i class="fas fa-minus"></i>
+              </button>
+
+              <input id="form1" min="0" name="quantity" value="1" type="number"
+                class="form-control form-control-sm text-center" />
+
+              <button class="btn btn-link px-2"
+                onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                <i class="fas fa-plus"></i>
+              </button>
+            </div>
+            <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+              <h6 class="mb-0">$ 44.00</h6>
+            </div>
+            <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+              <a href="#!" class="text-muted"><i class="fas fa-times"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="card">
+            <div class="card-body">
+              <h3 class="text-muted card-title border-bottom pb-3">Summary</h3>
+              <div class="container pt-3 pb-2 px-4">
+                <div class="row py-2">
+                  <div class="col text-start">
+                    Items <span class="badge text-bg-primary">3</span>
+                  </div>
+                  <div class="col text-end">
+                    250$
+                  </div>
+                </div>
+                <div class="row py-2 border-bottom">
+                  <div class="col text-start">
+                    Shipping
+                  </div>
+                  <div class="col text-end">
+                    10$
+                  </div>
+                </div>
+
+                <div class="row py-3">
+                  <div class="col fw-bold text-start">Total amount</div>
+                  <div class="col fw-bold text-end">260$</div>
+                </div>
+                <div class="row py-3">
+                  <Button class="btn btn-primary">CHECKOUT</Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
+  <script src="https://kit.fontawesome.com/c474ed5261.js" crossorigin="anonymous"></script>
 </body>
 </html>
