@@ -6,22 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>WoW Commerce</title>
     <link rel="stylesheet" href="dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="dist/css/style.css" />
     <script src="dist/js/bootstrap.bundle.min.js" defer></script>
   </head>
-  <body>
+  <body class="min-vw-100 min-vh-100">
+    <!-- Header of the website -->
     <header class="p-3 mb-3 border-bottom">
       <div class="container">
         <div class="row">
           <ul class="nav nav-pills col-9 col-sm-10">
             <li class="nav-item">
-              <a href="index.html" class="nav-link" aria-current="page">
-                Home
-              </a>
+              <a href="index.html" class="nav-link" aria-current="page">Home</a>
             </li>
             <li class="nav-item">
               <a href="shop.html" class="nav-link"> Shop </a>
             </li>
             <li class="nav-item">
+
               <a href="cart.html" class="nav-link d-flex align-items-center gap-1"
                 >Cart
                 <span class="badge text-bg-danger">0</span>
@@ -30,12 +31,13 @@
             <li class="nav-item">
               <a href="orders.html" class="nav-link active">Orders</a>
             </li>
+            <!-- Profile must not appear before login -->
             <li class="nav-item">
               <a href="profile.html" class="nav-link">Profile</a>
             </li>
           </ul>
           <div class="col-3 col-sm-2 text-end">
-            <a href="login.html" class="btn btn-outline-primary me-2">Login</a>
+            <a href="login.html" class="btn btn-outline-primary me-2">Log out</a>
           </div>
         </div>
       </div>
@@ -47,6 +49,108 @@
 
       <!-- TODO: Design orders pagination-->
       <!-- bootstrap pagination: https://getbootstrap.com/docs/5.3/components/pagination/ -->
+
+      <h1 class="" style="text-align: center;">Your orders</h1>
+      
+      <!-- Orders table -->
+      <div>
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Order #</th>
+              <th scope="col">Date</th>
+              <th scope="col"># of items</th>
+              <th scope="col">Status</th>
+              <th scope="col">Payment</th>
+              <th scope="col">Total price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row"><a href="">#1</a></th>
+              <td>25-01-2023</td>
+              <td>3</td>
+              <td>Received</td>
+              <td>COR</td>
+              <td>$250</td>
+            </tr>
+            <tr>
+              <th scope="row"><a href="">#2</a></th>
+              <td>12-02-2023</td>
+              <td>2</td>
+              <td>Shipped</td>
+              <td>Paid online</td>
+              <td>$500</td>
+            </tr>
+            <tr>
+              <th scope="row"><a href="">#3</a></th>
+              <td>12-02-2023</td>
+              <td>5</td>
+              <td>Pending</td>
+              <td>COR</td>
+              <td>$300</td>
+            </tr>
+            <tr>
+              <th scope="row"><a href="">#4</a></th>
+              <td>17-03-2023</td>
+              <td>1</td>
+              <td>Shipped</td>
+              <td>Paid online</td>
+              <td>$100</td>
+            </tr>
+            <tr>
+              <th scope="row"><a href="">#5</a></th>
+              <td>25-03-2023</td>
+              <td>6</td>
+              <td>Shipped</td>
+              <td>COR</td>
+              <td>$850</td>
+            </tr>
+          </tbody>
+        
+        </table>
+      </div>
+        
     </main>
+
+    <nav aria-label="...">
+      <ul class="pagination justify-content-center">
+        <li class="page-item disabled">
+          <span class="page-link">Previous</span>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#">1</a>
+        </li>
+        <!-- <li class="page-item active" aria-current="page">
+          <span class="page-link">2</span>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#">3</a>
+        </li> -->
+        <li class="page-item disabled">
+          <a class="page-link" href="#">Next</a>
+        </li>
+      </ul>
+    </nav>
+
+
+    <!-- Footer of the page-->
+    <!-- <footer class="text-muted py-5">
+      <div class="container">
+        <p class="float-end mb-1">
+          <a href="#">Back to top</a>
+        </p>
+        <p class="mb-1">
+          Album example is &copy; Bootstrap, but please download and customize
+          it for yourself!
+        </p>
+        <p class="mb-0">
+          New to Bootstrap? <a href="/">Visit the homepage</a> or read our
+          <a href="../getting-started/introduction/">getting started guide</a>.
+        </p>
+      </div>
+    </footer> -->
+
+    <script src="https://kit.fontawesome.com/c474ed5261.js" crossorigin="anonymous"></script>
   </body>
 </html>
