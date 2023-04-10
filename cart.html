@@ -7,6 +7,7 @@
   <title>WoW Commerce</title>
   <link rel="stylesheet" href="dist/css/bootstrap.min.css">
   <script src="dist/js/bootstrap.bundle.min.js" defer></script>
+  <script src="dist/js/cart.js" type="module" defer></script>
 </head>
 <body>
   <header class="p-3 mb-3 border-bottom">
@@ -38,23 +39,23 @@
   </header>
 
   <main>
-    <div class="container p-3">
-      <div class="row">
-        <div class="col-8 overflow-y-scroll pe-5">
+    <div class="container">
+      <div class="row d-flex">
+        <div class="col-lg-8 col-sm-12">
 
           <h1 class="mb-4">Shopping Cart</h1>
           <hr>
-          <div class="row mb-4 d-flex justify-content-between align-items-center pb-4 border-bottom">
-            <div class="col-md-2 col-lg-2 col-xl-2">
+          <div class="row mb-4 d-flex justify-content-between align-items-center pb-4 border-bottom position-relative">
+            <div class="col-6 col-sm-2 col-md-2 col-lg-2 col-xl-2">
               <img
                 src="https://via.placeholder.com/200"
                 class="img-fluid rounded-3" alt="Cotton T-shirt">
             </div>
-            <div class="col-md-3 col-lg-3 col-xl-3">
+            <div class="col-6 col-sm-3 col-md-3 col-lg-3 col-xl-3 d-sm-block d-flex align-items-start flex-column-reverse">
               <h6 class="text-muted">Category</h6>
               <h6 class="text-black mb-0">Product title</h6>
             </div>
-            <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+            <div class="col-6 col-sm-3 col-md-3 col-lg-3 col-xl-2 d-flex mt-sm-0 mt-2">
               <button class="btn btn-link px-2"
                 onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
                 <i class="fas fa-minus"></i>
@@ -68,24 +69,24 @@
                 <i class="fas fa-plus"></i>
               </button>
             </div>
-            <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+            <div class="col-6 col-sm-3 col-md-3 col-lg-2 col-xl-2 offset-lg-1 d-sm-block d-flex justify-content-center align-items-center mt-sm-0 mt-2">
               <h6 class="mb-0">$ 44.00</h6>
             </div>
-            <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+            <div class="col-1 col-md-1 col-lg-1 col-xl-1 text-end">
               <a href="#!" class="text-muted"><i class="fas fa-times"></i></a>
             </div>
           </div>
-          <div class="row mb-4 d-flex justify-content-between align-items-center pb-4 border-bottom">
-            <div class="col-md-2 col-lg-2 col-xl-2">
+          <div class="row mb-4 d-flex justify-content-between align-items-center pb-4 border-bottom position-relative">
+            <div class="col-6 col-sm-2 col-md-2 col-lg-2 col-xl-2">
               <img
                 src="https://via.placeholder.com/200"
                 class="img-fluid rounded-3" alt="Cotton T-shirt">
             </div>
-            <div class="col-md-3 col-lg-3 col-xl-3">
+            <div class="col-6 col-sm-3 col-md-3 col-lg-3 col-xl-3 d-sm-block d-flex align-items-start flex-column-reverse">
               <h6 class="text-muted">Category</h6>
               <h6 class="text-black mb-0">Product title</h6>
             </div>
-            <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+            <div class="col-6 col-sm-3 col-md-3 col-lg-3 col-xl-2 d-flex mt-sm-0 mt-2">
               <button class="btn btn-link px-2"
                 onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
                 <i class="fas fa-minus"></i>
@@ -99,15 +100,15 @@
                 <i class="fas fa-plus"></i>
               </button>
             </div>
-            <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+            <div class="col-6 col-sm-3 col-md-3 col-lg-2 col-xl-2 offset-lg-1 d-sm-block d-flex justify-content-center align-items-center mt-sm-0 mt-2">
               <h6 class="mb-0">$ 44.00</h6>
             </div>
-            <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+            <div class="col-1 col-md-1 col-lg-1 col-xl-1 text-end position-absolute top-0 end-0">
               <a href="#!" class="text-muted"><i class="fas fa-times"></i></a>
             </div>
           </div>
         </div>
-        <div class="col-4">
+        <div class="col-lg-4 col-sm-12">
           <div class="card">
             <div class="card-body">
               <h3 class="text-muted card-title border-bottom pb-3">Summary</h3>
