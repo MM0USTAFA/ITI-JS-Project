@@ -15,5 +15,9 @@ export default class Product{
   displayPrice(){
     return this.isOffered ? this.price - this.price * this.discountPercentage / 100 : this.price
   }
+
+  getThumbnail(){
+    return `https://iti-js-api.onrender.com/file/${this.thumbnail}`
+  }
   
 }
