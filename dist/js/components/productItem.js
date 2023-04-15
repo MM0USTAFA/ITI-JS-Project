@@ -23,12 +23,12 @@ export default class ProductItem {
       />
       <div class="card-body">
         <div class="d-flex justify-content-between">
-          <p class="small"><a href="${
-            this.product.category.id
-          }" class="text-muted">${this.product.category.title}</a></p>
-          <p class="small text-danger">${
-            this.product.isOffered ? `<s>${this.product.price}</s> ` : ''
-          }</p>
+          <p class="small">
+            <a class="text-muted">${this.product.category.title}</a>
+          </p>
+          <p class="small text-danger">
+            ${this.product.isOffered ? `<s>${this.product.price}</s> ` : ''}
+          </p>
         </div>
 
         <div class="d-flex justify-content-between mb-3">
@@ -54,7 +54,9 @@ export default class ProductItem {
 
     addToCartBtn.onclick = this.addToCartHandler.bind(this)
     showDetailsBtn.onclick = this.showDetailsHandler.bind(this)
-    this.getCardBody().querySelector('#actions').append(addToCartBtn, showDetailsBtn)
+    this.getCardBody()
+      .querySelector('#actions')
+      .append(addToCartBtn, showDetailsBtn)
   }
 
   getCardBody() {

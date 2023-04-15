@@ -3,6 +3,7 @@ import Utilities from './utils/utilities.js';
 import CategoryItem from './components/categoryItem.js';
 import ProductItem from './components/productItem.js';
 import Pagination from './components/pagination.js';
+import PlaceHolders from './utils/placeholders.js';
 
 const container = document.querySelector('main.container')
 
@@ -13,6 +14,16 @@ const addToCartHandler = function() {
 
 const showDetailsHandler = function() {
   
+}
+
+const pageClickedHandler = function(page) {
+  console.log(this);
+  console.log(page);
+}
+
+const initPlaceHolders = ()=> {
+  container.innerHTML = PlaceHolders.generateCategoriesPH()
+  container.innerHTML += PlaceHolders.generateProductsPH(8)
 }
 
 const initCategories = (categories) => {
@@ -42,17 +53,17 @@ const initProducts = ({products, page: currentPage, pages}) => {
 
 const initPagination = (pages, currentPage) =>{
   const paginationGroup = new Row().appendCol({other: 12}, "d-flex justify-content-center")
-  const pagination = new Pagination(pages, currentPage).getItem()
+  const pagination = new Pagination(pageClickedHandler, pages, currentPage).getItem()
   paginationGroup.appendChild(pagination)
   container.appendChild(paginationGroup)
 }
 
-
-
+initPlaceHolders()
 Utilities.dealWithAPIs("/categories").then(categories => {
-  initCategories(categories)
+  Utilities.dealWithAPIs('/products').then(products => {
+    container.innerHTML  = ''
+    initCategories(categories)
+    initProducts(products)
+  })
 })
 
-Utilities.dealWithAPIs('/products').then(products => {
-  initProducts(products)
-})
