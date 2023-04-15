@@ -7,6 +7,7 @@ export default class Modal {
     this.setFooter(footerComponents)
   }
 
+  
   getModalInstance() {
     return this.modal
   }
@@ -19,7 +20,7 @@ export default class Modal {
     this.modal.hide()
   }
 
-  _generateModal() {
+  _generateModal(){
     const modal = document.createElement('div')
     modal.id = this.id || null
     modal.className = `modal modal-lg fade`
@@ -42,10 +43,7 @@ export default class Modal {
     return modal
   }
 
-  getBody(){
-    return this.modal._dialog.querySelector('.modal-body')
-  }
-
+  
   getContent(){
     return this.modal._dialog.querySelector('.modal-content')
   }
@@ -54,7 +52,7 @@ export default class Modal {
     if(components.length === 0){
       return ''
     }
-
+    // <div class="modal-footer">
     const footer = document.createElement('div')
     footer.className = `modal-footer`
     footer.append(...components)

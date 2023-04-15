@@ -19,7 +19,7 @@ export default class Row {
     return col
   }
 
-  appendCol(screenOptions, styles=""){
+  appendCol(screenOptions, styles=""){ 
     const classes = Utilities.convertObjToCSSClasses('col', screenOptions)
     const col = this._generateColumn(classes, styles)
     this.row.appendChild(col)

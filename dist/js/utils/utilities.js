@@ -13,7 +13,7 @@ export default class Utilities {
 
   static convertObjToCSSClasses(prefix, cssObject){
     const classes = []
-    for (const key in cssObject) {
+    for (const key in cssObject) {             
       classes.push(`${prefix}${key !== 'other' ? `-${key}`: ''}-${cssObject[key]}`)
     }
     return classes
@@ -24,7 +24,7 @@ export default class Utilities {
       method: method,
       body: body,
       headers: {'Content-Type': 'application/json'}
-    }
+    }//class='any'
     const response = await fetch(`${BASE_URL}${path}`, fetchOptions)
     const data = await response.json()
     return data
