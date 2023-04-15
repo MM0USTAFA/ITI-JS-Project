@@ -1,7 +1,8 @@
 export default class CategoryItem {
-  constructor(pages, currentPage = 1) {
+  constructor(pageClickedHandler, pages, currentPage = 1) {
     this.pages = pages
     this.currentPage = currentPage
+    this.pageClickedHandler = pageClickedHandler
     this._item = this._generateItem()
   }
 
@@ -18,9 +19,12 @@ export default class CategoryItem {
     for (let page = 1; page <= this.pages; page++) {
       const li = document.createElement('li')
       li.classList.add('page-item')
-      li.innerHTML = `<a class="page-link ${
-        this.currentPage == page ? 'active' : ''
-      }" data-bs-page="${page}" href="#${page}">${page}</a>`
+      const link = document.createElement('button')
+      link.className = `page-link ${this.currentPage == page ? 'active' : ''}`.trim()
+      link.dataset.bsPage = page
+      link.textContent = page
+      link.onclick = this.pageClickedHandler.bind(link, page)
+      li.appendChild(link)
       list.appendChild(li)
     }
     return list

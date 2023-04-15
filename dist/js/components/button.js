@@ -12,8 +12,14 @@ export default class Button {
   }
 
   _initAttributes(btn){
-    for (const property in this.attrs) {
-      btn.setAttribute(property, this.attrs[property])
+    const attributes = Utilities.convertObjToHTMLAttr(this.attrs).trim()
+    if(attributes.length === 0){
+      return
+    }
+
+    for (const attr of attributes) {
+      const [attribute, value] = attr.split('=')
+      btn.setAttribute(attribute, value)
     }
   }
 

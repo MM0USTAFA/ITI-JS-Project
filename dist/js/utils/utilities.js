@@ -1,35 +1,34 @@
 export default class Utilities {
   static BASE_URL = 'https://iti-js-api.onrender.com'
 
-  static replacingObjToHTMLCriteria(matched){
-    return matched === ':' ? '=' : ''
+  static replacingObjToHTMLCriteria(matched) {
+    return matched === ':' ? '=' : matched === ',' ? ' ' : ''
   }
 
-  // "key"="value"
-
-  static convertObjToHTMLAttr(HTMLAttrObj){
+  static convertObjToHTMLAttr(HTMLAttrObj) {
     const HTMLAttrObjStr = JSON.stringify(HTMLAttrObj) // test=test
-    const convertedObject = HTMLAttrObjStr.replace(/([ :{}"])/g, Utilities.replacingObjToHTMLCriteria)
+    const convertedObject = HTMLAttrObjStr.replace(
+      /([ :{},"])/g,
+      Utilities.replacingObjToHTMLCriteria
+    )
     return convertedObject
   }
 
-  // {xxl: 6, xl: 6, lg: 12, other: 12}
-  // prefix = col
-  static convertObjToCSSClasses(prefix, cssObject){
+  static convertObjToCSSClasses(prefix, cssObject) {
     const classes = []
     for (const key in cssObject) {
-      classes.push(`${prefix}${key !== 'other' ? `-${key}`: ''}-${cssObject[key]}`)
-      // col-xxl-6
-      // col-12
+      classes.push(
+        `${prefix}${key !== 'other' ? `-${key}` : ''}-${cssObject[key]}`
+      )
     }
     return classes
   }
 
-  static async dealWithAPIs(path, method="GET", body=null){
+  static async dealWithAPIs(path, method = 'GET', body = null) {
     const fetchOptions = {
       method: method,
       body: body,
-      headers: {'Content-Type': 'application/json'}
+      headers: { 'Content-Type': 'application/json' }
     }
     const response = await fetch(`${Utilities.BASE_URL}${path}`, fetchOptions)
     const data = await response.json()
