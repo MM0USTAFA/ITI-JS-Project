@@ -1,8 +1,10 @@
 import Product from '../models/product.js'
 import Button from './button.js'
 export default class ProductItem {
-  constructor(product) {
+  constructor(product, addToCartHandler, showDetailsHandler) {
     this.product = new Product(product)
+    this.addToCartHandler = addToCartHandler
+    this.showDetailsHandler = showDetailsHandler
     this._item = this._generateItem()
     this._initItemActions()
   }
@@ -11,11 +13,13 @@ export default class ProductItem {
     const item = document.createElement('div')
     item.id = this.product.id
     item.className = `card shadow-lg`
+    item.style.cssText = 'height: 300px;'
     item.innerHTML = `
       <img
-        src="${this.product.thumbnail}"
-        class="card-img-top"
+        src="${this.product.getThumbnail()}"
+        class="card-img-top object-fit-cover"
         alt="${this.product.title}"
+        style="height: 50%;"
       />
       <div class="card-body">
         <div class="d-flex justify-content-between">
@@ -41,12 +45,15 @@ export default class ProductItem {
 
   _initItemActions() {
     const addToCartBtn = new Button(null, 'Add to cart', {
-      color: 'danger'
+      color: 'danger',
+      style: 'btn-sm'
     }).getBtn()
     const showDetailsBtn = new Button(null, 'Show Details', {
       color: 'warning'
     }).getBtn()
 
+    addToCartBtn.onclick = this.addToCartHandler.bind(this)
+    showDetailsBtn.onclick = this.showDetailsHandler.bind(this)
     this.getCardBody().querySelector('#actions').append(addToCartBtn, showDetailsBtn)
   }
 
