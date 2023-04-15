@@ -5,8 +5,27 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
+    <link rel="stylesheet" href="dist/css/bootstrap.min.css">
 </head>
 <body>
-    
+    <main class="container">
+        <div class="d-flex justify-content-center align-items-center vh-100">
+            <form class="w-50 border border-2 rounded-2 py-2 px-2  shadow-lg">
+                <div class="text-center shadow p-3 mb-5 bg-body rounded">
+                    <h2 class="mb-4 ">Login</h2>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email address</label>
+                    <input type="email" class="form-control"  aria-describedby="emailHelp">
+                  </div>
+                <div class="mb-3">
+                  <label  class="form-label">Password</label>
+                  <input type="password" class="form-control">
+                </div>
+                <p>you have on an account? <a href="register.html">Register</a></p>
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+        </div>
+    </main>
 </body>
 </html>
