@@ -4,6 +4,7 @@ import CategoryItem from './components/categoryItem.js';
 import ProductItem from './components/productItem.js';
 import Pagination from './components/pagination.js';
 import PlaceHolders from './utils/placeholders.js';
+import Modal from './components/mdoal.js';
 
 const container = document.querySelector('main.container')
 
@@ -13,7 +14,10 @@ const addToCartHandler = function() {
 }
 
 const showDetailsHandler = function() {
-  
+  const {product} = this
+  console.log(product);
+  const modal = new Modal(product.id, "",document.createElement('h1'))
+  modal.show()
 }
 
 const pageClickedHandler = function(page) {
