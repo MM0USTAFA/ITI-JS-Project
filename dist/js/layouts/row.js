@@ -1,12 +1,14 @@
 import Utilities from "../utils/utilities.js"
 
 export default class Row {
-  constructor(){
+  constructor(id=null){
+    this._id = id
     this.row = this._generateRow()
   }
 
   _generateRow(){
     const row = document.createElement('div')
+    row.id = this._id
     row.className = `row`
     return row
   }

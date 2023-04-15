@@ -52,7 +52,7 @@ export default class ProductItem {
       color: 'warning'
     }).getBtn()
 
-    addToCartBtn.onclick = this.addToCartHandler.bind(this)
+    addToCartBtn.onclick = this.addToCartHandler.bind(this.product)
     showDetailsBtn.onclick = this.showDetailsHandler.bind(this)
     this.getCardBody()
       .querySelector('#actions')
