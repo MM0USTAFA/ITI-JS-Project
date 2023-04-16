@@ -11,13 +11,63 @@ const itemsContainerTemp = document
 const cartItemTemp = document.getElementById('cart-item')
 const summaryTemp = document.getElementById('summary')
 
-console.log(itemsContainerTemp.content.cloneNode(true));
+const incrementHandler = function(product, ev) {
+  const cart = Utilities.getCart()
+  const itemsBadge = document.querySelector('span.item-count-badge')
+  const totalItemPrice = document.querySelector('div.total-items-price')
+  const totalAmount = document.querySelector('div.total-amount')
+  const priceEl = this.querySelector('h6.price-text')
+  const qtyInput = this.querySelector('input[name="quantity"]')
+  const qty = ++cart.products[product.id]
+  qtyInput.value = qty
+  priceEl.textContent = `${+qty * product.displayPrice()}$`
+  itemsBadge.textContent = +itemsBadge.textContent + 1
+  totalItemPrice.textContent = `${parseFloat(totalItemPrice.textContent) + product.displayPrice()}$`
+  totalAmount.textContent = `${parseFloat(totalItemPrice.textContent) + 10}$`
+  window.localStorage.setItem('cart', JSON.stringify(cart))
+}
 
-const incrementHandler = (ev) => {}
+const decrementHandler = function(product, ev) {
+  const cart = Utilities.getCart()
+  const itemsBadge = document.querySelector('span.item-count-badge')
+  const totalItemPrice = document.querySelector('div.total-items-price')
+  const totalAmount = document.querySelector('div.total-amount')
+  const priceEl = this.querySelector('h6.price-text')
+  const qtyInput = this.querySelector('input[name="quantity"]')
+  const qty = --cart.products[product.id]
+  qtyInput.value = qty
+  priceEl.textContent = `${+qty * product.displayPrice()}$`
+  itemsBadge.textContent = +itemsBadge.textContent - 1
+  totalItemPrice.textContent = `${parseFloat(totalItemPrice.textContent) - product.displayPrice()}$`
+  totalAmount.textContent = `${parseFloat(totalItemPrice.textContent) + 10}$`
+  if(qty === 0){
+    this.remove()
+    delete cart.products[product.id]
+    Header.updateCartCounter(cart.size())
+  }
+  window.localStorage.setItem('cart', JSON.stringify(cart))
+  if(cart.size() === 0){
+    container.innerHTML = `<h1>Empty cart :(</h1>`
+  }
+}
 
-const decrementHandler = (ev) => {}
-
-const deleteHandler = (ev) => {}
+const deleteHandler = function(product, ev){
+  const cart = Utilities.getCart()
+  const itemsBadge = document.querySelector('span.item-count-badge')
+  const totalItemPrice = document.querySelector('div.total-items-price')
+  const totalAmount = document.querySelector('div.total-amount')
+  const qty = cart.products[product.id]
+  itemsBadge.textContent = +itemsBadge.textContent - qty
+  totalItemPrice.textContent = parseFloat(totalItemPrice.textContent) - (product.displayPrice() * qty)
+  totalAmount.textContent = `${parseFloat(totalItemPrice.textContent) + 10}$`
+  delete cart.products[product.id]
+  Header.updateCartCounter(cart.size())
+  this.remove()
+  window.localStorage.setItem('cart', JSON.stringify(cart))
+  if(cart.size() === 0){
+    container.innerHTML = `<h1>Empty cart :(</h1>`
+  }
+}
 
 const initHeader = () => {
   const user = window.sessionStorage.getItem('user')
@@ -34,7 +84,7 @@ const initLayout = (products) => {
 
 const initItemsContainer = (products) => {
   if (products.length === 0) {
-    layoutTemp.innerHTML = `<h1>No products found</h1>`
+    layoutTemp.innerHTML = `<h1>Empty cart :(</h1>`
     return
   }
 
@@ -42,7 +92,7 @@ const initItemsContainer = (products) => {
   const itemsContainer = itemsContainerTemp.content.cloneNode(true).firstElementChild
   for (const _product of products) {
     const product = new Product(_product)
-    const cartItem = cartItemTemp.content.cloneNode(true)
+    const cartItem = cartItemTemp.content.cloneNode(true).firstElementChild
     const pImg = cartItem.querySelector('img.product-img')
     pImg.src = product.getThumbnail()
 
@@ -56,9 +106,10 @@ const initItemsContainer = (products) => {
     const decrementBtn = cartItem.querySelector('button.decrement-btn')
     const deleteBtn = cartItem.querySelector('a.delete-item')
 
-    incrementBtn.onclick = incrementHandler
-    decrementBtn.onclick = decrementHandler
-    deleteBtn.onclick = deleteHandler
+    incrementBtn.onclick = incrementHandler.bind(cartItem, product)
+    decrementBtn.onclick = decrementHandler.bind(cartItem, product)
+    deleteBtn.onclick = deleteHandler.bind(cartItem, product)
+
 
     const qtyInput = cartItem.querySelector('input[name="quantity"]')
     qtyInput.value = cart.products[product.id]

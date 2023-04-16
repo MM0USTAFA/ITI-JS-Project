@@ -1,5 +1,4 @@
 import Button from './button.js'
-import QtyComponent from './qty.js'
 
 export default class ProductModalBody {
   constructor(
