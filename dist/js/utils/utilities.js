@@ -25,19 +25,54 @@ export default class Utilities {
     return classes
   }
 
-  static async dealWithAPIs(path, method='GET', body=null, headers=null) {
+  static saveCookie(key, value, options = {}) {
+    let cookie = `${key}=${value};`
+    for (const key in options) {
+      if (key.toLowerCase() === 'secure') {
+        cookie += `Secure;`
+      }
+      cookie += `${key}=${options[key]}`
+    }
+    document.cookie = cookie
+  }
+
+  static getCookiesObject() {
+    return document.cookie.split(';').reduce((cookieObject, currentCookie) => {
+      const [key, value] = currentCookie.split('=')
+      cookieObject[decodeURIComponent(key.trim())] = decodeURIComponent(
+        value.trim()
+      )
+      return cookieObject
+    }, {})
+  }
+
+  static getCart() {
+    const cart = (window.localStorage.getItem('cart') &&
+      JSON.parse(window.localStorage.getItem('cart'))) || {
+      products: {}
+    }
+
+    cart.size = function () {
+      return Object.keys(this.products).length
+    }
+    
+    return cart
+  }
+
+  static async dealWithAPIs(path, method = 'GET', body = null, headers = null) {
     const fetchOptions = {
       method: method,
       body: body,
-      mode: 'cors',
+      mode: 'cors'
     }
 
-    if(headers){
+    if (headers) {
       fetchOptions.headers = headers
     }
+
     const response = await fetch(`${Utilities.BASE_URL}${path}`, fetchOptions)
     const data = await response.json()
-    if(response.status < 400){
+    if (response.status < 400) {
       return data
     }
     return Promise.reject(data)

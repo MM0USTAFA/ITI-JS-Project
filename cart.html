@@ -13,7 +13,7 @@
   <header class="p-3 mb-3 border-bottom">
     <div class="container">
       <div class="row">
-        <ul class="nav nav-pills col-9 col-sm-10">
+        <ul id="navigation-section" class="nav nav-pills col-9 col-sm-10">
           <li class="nav-item">
             <a href="index.html" class="nav-link" aria-current="page">
               Home
@@ -23,29 +23,28 @@
             <a href="shop.html" class="nav-link"> Shop </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link d-flex align-items-center gap-1 active"
+            <a href="cart.html" class="nav-link d-flex align-items-center gap-1 active"
               >Cart
               <span class="badge text-bg-danger">0</span>
             </a>
           </li>
-          <li class="nav-item"><a href="orders.html" class="nav-link">Orders</a></li>
-          <li class="nav-item"><a href="profile.html" class="nav-link">Profile</a></li>
+          <!-- <li class="nav-item"><a href="orders.html" class="nav-link">Orders</a></li>
+          <li class="nav-item"><a href="profile.html" class="nav-link">Profile</a></li> -->
         </ul>
-        <div class="col-3 col-sm-2 text-end">
+        <div id="profile-section" class="col-3 col-sm-2 text-end">
           <a href="login.html" class="btn btn-outline-primary me-2">Login</a>
         </div>
       </div>
     </div>
   </header>
 
-  <main>
-    <div class="container">
-      <div class="row d-flex">
+  <main class="container">
+      <!-- <div class="row d-flex">
         <div class="col-lg-8 col-sm-12">
 
           <h1 class="mb-4">Shopping Cart</h1>
           <hr>
-          <div class="row mb-4 d-flex justify-content-between align-items-center pb-4 border-bottom position-relative">
+          <div class="row mb-4 d-flex justify-content-between align-items-center pb-4 border-bottom">
             <div class="col-6 col-sm-2 col-md-2 col-lg-2 col-xl-2">
               <img
                 src="https://via.placeholder.com/200"
@@ -76,37 +75,7 @@
               <a href="#!" class="text-muted"><i class="fas fa-times"></i></a>
             </div>
           </div>
-          <div class="row mb-4 d-flex justify-content-between align-items-center pb-4 border-bottom position-relative">
-            <div class="col-6 col-sm-2 col-md-2 col-lg-2 col-xl-2">
-              <img
-                src="https://via.placeholder.com/200"
-                class="img-fluid rounded-3" alt="Cotton T-shirt">
-            </div>
-            <div class="col-6 col-sm-3 col-md-3 col-lg-3 col-xl-3 d-sm-block d-flex align-items-start flex-column-reverse">
-              <h6 class="text-muted">Category</h6>
-              <h6 class="text-black mb-0">Product title</h6>
-            </div>
-            <div class="col-6 col-sm-3 col-md-3 col-lg-3 col-xl-2 d-flex mt-sm-0 mt-2">
-              <button class="btn btn-link px-2"
-                onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                <i class="fas fa-minus"></i>
-              </button>
 
-              <input id="form1" min="0" name="quantity" value="1" type="number"
-                class="form-control form-control-sm text-center" />
-
-              <button class="btn btn-link px-2"
-                onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                <i class="fas fa-plus"></i>
-              </button>
-            </div>
-            <div class="col-6 col-sm-3 col-md-3 col-lg-2 col-xl-2 offset-lg-1 d-sm-block d-flex justify-content-center align-items-center mt-sm-0 mt-2">
-              <h6 class="mb-0">$ 44.00</h6>
-            </div>
-            <div class="col-1 col-md-1 col-lg-1 col-xl-1 text-end position-absolute top-0 end-0">
-              <a href="#!" class="text-muted"><i class="fas fa-times"></i></a>
-            </div>
-          </div>
         </div>
         <div class="col-lg-4 col-sm-12">
           <div class="card">
@@ -141,9 +110,88 @@
             </div>
           </div>
         </div>
+      </div> -->
+  </main>
+
+  <template id="layout-template">
+    <div class="row d-flex"></div>
+  </template>
+
+  <template id="items-container">
+    <div class="col-lg-8 col-sm-12">
+      <h1 class="mb-4">Shopping Cart</h1>
+      <hr>
+    </div>
+  </template>
+
+  <template id="cart-item">
+    <div class="row mb-4 d-flex justify-content-between align-items-center pb-4 border-bottom">
+      <div class="col-6 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+        <img
+          src=""
+          style="height: 75px;"
+          class="img-fluid rounded-3 product-img" alt="">
+      </div>
+      <div class="col-6 col-sm-3 col-md-3 col-lg-3 col-xl-3 d-sm-block d-flex align-items-start flex-column-reverse">
+        <h6 class="text-muted category-title"></h6>
+        <h6 class="text-black mb-0 product-title"></h6>
+      </div>
+      <div class="col-6 col-sm-3 col-md-3 col-lg-3 col-xl-2 d-flex mt-sm-0 mt-2">
+        <button class="btn btn-link px-2 decrement-btn">
+          <i class="fas fa-minus"></i>
+        </button>
+
+        <input min="0" name="quantity" value="1" type="text"
+          class="form-control form-control-sm text-center disabled" disabled />
+
+        <button class="btn btn-link px-2 increment-btn">
+          <i class="fas fa-plus"></i>
+        </button>
+      </div>
+      <div class="col-6 col-sm-3 col-md-3 col-lg-2 col-xl-2 offset-lg-1 d-sm-block d-flex justify-content-center align-items-center mt-sm-0 mt-2">
+        <h6 class="mb-0 price-text"></h6>
+      </div>
+      <div class="col-1 col-md-1 col-lg-1 col-xl-1 text-end">
+        <a href="#!" class="text-muted delete-item"><i class="fas fa-times"></i></a>
       </div>
     </div>
-  </main>
+  </template>
+
+  <template id="summary">
+    <div class="col-lg-4 col-sm-12">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="text-muted card-title border-bottom pb-3">Summary</h3>
+          <div class="container pt-3 pb-2 px-4">
+            <div class="row py-2">
+              <div class="col text-start">
+                Items <span class="badge text-bg-primary item-count-badge">0</span>
+              </div>
+              <div class="col text-end total-items-price">
+                
+              </div>
+            </div>
+            <div class="row py-2 border-bottom">
+              <div class="col text-start">
+                Shipping
+              </div>
+              <div class="col text-end shipping-price">
+                10$
+              </div>
+            </div>
+
+            <div class="row py-3">
+              <div class="col fw-bold text-start">Total amount</div>
+              <div class="col fw-bold text-end total-amount"></div>
+            </div>
+            <div class="row py-3 actions">
+              <Button class="btn btn-primary">CHECKOUT</Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
   <script src="https://kit.fontawesome.com/c474ed5261.js" crossorigin="anonymous"></script>
 </body>
 </html>

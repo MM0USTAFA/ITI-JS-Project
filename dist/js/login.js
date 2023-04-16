@@ -8,8 +8,10 @@ const submitEventHandler = (ev) => {
   const smbtBtn = form.querySelector('button[type="submit"]')
   smbtBtn.disabled = true
   Utilities.dealWithAPIs('/login', 'POST', JSON.stringify({email, password}), {'Content-Type': 'application/json'})
-    .then((data) => {
-      console.log(data);
+    .then(({token, user}) => {
+      Utilities.saveCookie('token', token, {'max-age': 60*60*24*365})
+      window.sessionStorage.setItem('user', JSON.stringify(user))
+      location.replace('shop.html')
     })
     .catch((err) => {
       console.log(err);

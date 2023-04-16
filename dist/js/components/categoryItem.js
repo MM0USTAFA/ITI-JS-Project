@@ -18,7 +18,6 @@ export default class CategoryItem {
 
   activeItem(id) {
     const category = this.getItem().parentNode.querySelector(`button[data-bs-category-id="${id}"]`)
-    console.log(category);
     if(category){
       category.classList.add('active')
     }

@@ -2,14 +2,16 @@ import Button from './button.js'
 import QtyComponent from './qty.js'
 
 export default class ProductModalBody {
-  constructor(product, addToCartHandler, incrementHandler, decrementHandler, qty = 0) {
+  constructor(
+    product,
+    addToCartHandler,
+    qty = 0
+  ) {
     this.product = product
     this.qty = qty
     this.addToCartHandler = addToCartHandler
-    this.incrementHandler = incrementHandler
-    this.decrementHandler = decrementHandler
     this._item = this._generateItem()
-    this._initActions()
+    this._initAction()
   }
 
   _generateItem() {
@@ -38,26 +40,17 @@ export default class ProductModalBody {
     return item
   }
 
-  _initActions() {
+  _initAction() {
     const actionsSection = this._item.querySelector(`#actions`)
-
-    if (this.qty == 0) {
-      const addToCartBtn = new Button(null, 'Add to cart', { color: 'danger', style: 'btn-sm' }).getBtn()
-      addToCartBtn.onclick = this.addToCartHandler.bind(this.product)
-      actionsSection.appendChild(addToCartBtn)
-      return
-    }
-
-    const qtyCompt = new QtyComponent(
-      this.product,
-      this.qty,
-      this.incrementHandler,
-      this.decrementHandler
-    )
-    actionsSection.replaceWith(qtyCompt.getItem())
+    const addToCartBtn = new Button(null, 'Add to cart', {
+      color: 'danger',
+      style: 'btn-sm'
+    }).getBtn()
+    addToCartBtn.onclick = this.addToCartHandler.bind(this.product)
+    actionsSection.appendChild(addToCartBtn)
   }
 
-  getItem(){
+  getItem() {
     return this._item
   }
 }

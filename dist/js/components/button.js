@@ -16,8 +16,8 @@ export default class Button {
     if(attributes.length === 0){
       return
     }
-
-    for (const attr of attributes) {
+    
+    for (const attr of attributes.split('=')) {
       const [attribute, value] = attr.split('=')
       btn.setAttribute(attribute, value)
     }
