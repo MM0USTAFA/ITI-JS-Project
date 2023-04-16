@@ -1,5 +1,6 @@
 export default class Utilities {
   static BASE_URL = 'https://iti-js-api.onrender.com'
+  // static BASE_URL = 'http://localhost:3000'
 
   static replacingObjToHTMLCriteria(matched) {
     return matched === ':' ? '=' : matched === ',' ? ' ' : ''
@@ -24,14 +25,21 @@ export default class Utilities {
     return classes
   }
 
-  static async dealWithAPIs(path, method = 'GET', body = null) {
+  static async dealWithAPIs(path, method='GET', body=null, headers=null) {
     const fetchOptions = {
       method: method,
       body: body,
-      headers: { 'Content-Type': 'application/json' }
+      mode: 'cors',
+    }
+
+    if(headers){
+      fetchOptions.headers = headers
     }
     const response = await fetch(`${Utilities.BASE_URL}${path}`, fetchOptions)
     const data = await response.json()
-    return data
+    if(response.status < 400){
+      return data
+    }
+    return Promise.reject(data)
   }
 }
