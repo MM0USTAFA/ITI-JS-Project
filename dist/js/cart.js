@@ -1,102 +1,288 @@
-import Modal from './components/mdoal.js'
-import Button from './components/button.js'
-import ProductItem from './components/productItem.js'
+import Header from './utils/header.js'
 import Utilities from './utils/utilities.js'
-import Row from './layouts/row.js'
 import Product from './models/product.js'
-import CategoryItem from './components/categoryItem.js'
-import Pagination from './components/pagination.js'
+import Modal from './components/mdoal.js'
+import LoginModalBody from './components/loginModalBody.js'
 
-const dismissBtn = new Button(null, 'close', {
-  attrs: { 'data-bs-dismiss': 'modal' },
-  color: 'secondary'
-})
-const saveBtn = new Button('save', 'save', { color: 'primary' })
-const h1 = document.createElement('h1')
-h1.textContent = 'Hello World'
-const modal = new Modal(
-  'test',
-  "Alaa's Title",
-  h1,
-  dismissBtn.getBtn(),
-  saveBtn.getBtn()
-)
-// modal.show()
+const container = document.querySelector('main.container')
+const layoutTemp = document
+  .getElementById('layout-template')
+  .content.cloneNode(true).firstElementChild
+const itemsContainerTemp = document.getElementById('items-container')
+const cartItemTemp = document.getElementById('cart-item')
+const summaryTemp = document.getElementById('summary')
 
-// const product = new Product({
-//   _id: '643602fd7754131ac504b0cd',
-//   title: 'product 22',
-//   price: 500,
-//   thumbnail: 'https://iti-js-api.onrender.com/file/643749b46f5aaa9fc59096e2',
-//   isOffered: true,
-//   discountPercentage: 2.5,
-//   category: {
-//     _id: '6435f519898aa1717833d0b1',
-//     title: 'category 3',
-//     thumbnail: 'https://via.placeholder.com/300'
-//   },
-//   createdAt: '2023-04-12T01:01:49.492Z',
-//   updatedAt: '2023-04-12T01:01:49.492Z',
-//   __v: 0
-// })
-// const pItem = new ProductItem(product)
-// document.body.appendChild(pItem.getItem())
-// console.log();
+const incrementHandler = function (product, ev) {
+  const cart = Utilities.getCart()
+  const itemsBadge = document.querySelector('span.item-count-badge')
+  const totalItemPrice = document.querySelector('div.total-items-price')
+  const totalAmount = document.querySelector('div.total-amount')
+  const priceEl = this.querySelector('h6.price-text')
+  const qtyInput = this.querySelector('input[name="quantity"]')
+  const qty = ++cart.products[product.id]
+  qtyInput.value = qty
+  priceEl.textContent = `${+qty * product.displayPrice()}$`
+  itemsBadge.textContent = +itemsBadge.textContent + 1
+  totalItemPrice.textContent = `${
+    parseFloat(totalItemPrice.textContent) + product.displayPrice()
+  }$`
+  totalAmount.textContent = `${parseFloat(totalItemPrice.textContent) + 10}$`
+  window.localStorage.setItem('cart', JSON.stringify(cart))
+}
 
-// const pi = new ProductItem({_id: 'test', category: {_id: 'test'}})
-// const row = new Row()
+const decrementHandler = function (product, ev) {
+  const cart = Utilities.getCart()
+  const itemsBadge = document.querySelector('span.item-count-badge')
+  const totalItemPrice = document.querySelector('div.total-items-price')
+  const totalAmount = document.querySelector('div.total-amount')
+  const priceEl = this.querySelector('h6.price-text')
+  const qtyInput = this.querySelector('input[name="quantity"]')
+  const qty = --cart.products[product.id]
+  qtyInput.value = qty
+  priceEl.textContent = `${+qty * product.displayPrice()}$`
+  itemsBadge.textContent = +itemsBadge.textContent - 1
+  totalItemPrice.textContent = `${
+    parseFloat(totalItemPrice.textContent) - product.displayPrice()
+  }$`
+  totalAmount.textContent = `${parseFloat(totalItemPrice.textContent) + 10}$`
+  if (qty === 0) {
+    this.remove()
+    delete cart.products[product.id]
+    Header.updateCartCounter(cart.size())
+  }
+  window.localStorage.setItem('cart', JSON.stringify(cart))
+  if (cart.size() === 0) {
+    container.innerHTML = `<h1>Empty cart :(</h1>`
+  }
+}
 
-// const col = row.appendCol({xxl: 12}, "d-flex justify-content-between p-5")
-// const col2 = row.appendCol({xxl: 12})
-// document.body.appendChild(row.getRow())
-// col.appendChild(new Button(null, 'test').getDOMObject())
-// col.appendChild(new Button(null, 'test').getDOMObject())
-// col.appendChild(new Button(null, 'test').getDOMObject())
-// col2.appendChild(new Button(null, 'test').getDOMObject())
-// col2.appendChild(new Button(null, 'test').getDOMObject())
-// col2.appendChild(new Button(null, 'test').getDOMObject())
-// setTimeout(()=> {
-//   col2.remove()
-// }, 3000)
-// console.log(col2)
+const deleteHandler = function (product, ev) {
+  const cart = Utilities.getCart()
+  const itemsBadge = document.querySelector('span.item-count-badge')
+  const totalItemPrice = document.querySelector('div.total-items-price')
+  const totalAmount = document.querySelector('div.total-amount')
+  const qty = cart.products[product.id]
+  itemsBadge.textContent = +itemsBadge.textContent - qty
+  totalItemPrice.textContent =
+    parseFloat(totalItemPrice.textContent) - product.displayPrice() * qty
+  totalAmount.textContent = `${parseFloat(totalItemPrice.textContent) + 10}$`
+  delete cart.products[product.id]
+  Header.updateCartCounter(cart.size())
+  this.remove()
+  window.localStorage.setItem('cart', JSON.stringify(cart))
+  if (cart.size() === 0) {
+    container.innerHTML = `<h1>Empty cart :(</h1>`
+  }
+}
 
-// document.body.appendChild(pi.getDOMObject())
+const loginSubmitFormHandler = (evt) => {
+  evt.preventDefault()
+  const form = evt.target
+  const email = form.querySelector('[name="email"]').value
+  const password = form.querySelector('[name="password"]').value
+  const smbtBtn = form.querySelector('button[type="submit"]')
+  smbtBtn.disabled = true
+  Utilities.dealWithAPIs(
+    '/login',
+    'POST',
+    JSON.stringify({ email, password }),
+    { 'Content-Type': 'application/json' }
+  )
+    .then(({ token, user }) => {
+      Utilities.saveCookie('token', token, { 'max-age': 60 * 60 * 24 * 365 })
+      window.sessionStorage.setItem('user', JSON.stringify(user))
+      location.reload()
+    })
+    .catch((err) => {
+      console.log(err)
+      form.querySelectorAll('input').forEach((inputEl) => {
+        inputEl.classList.add('is-invalid')
+        if (inputEl.nextElementSibling) {
+          return
+        }
+        inputEl.insertAdjacentHTML(
+          'afterend',
+          `<div class="invalid-feedback">Invalid email or password</div>`
+        )
+      })
+    })
+    .finally(() => {
+      smbtBtn.disabled = false
+    })
+}
 
-// pi.addToCartBtn.addEventListener('click', ()=> console.log('clicked'))
+const openLoginModalHandler = () => {
+  const modalBody = new LoginModalBody(loginSubmitFormHandler)
+  const loginModal = new Modal('login-modal', 'Login', modalBody.getItem())
+  loginModal.show()
+}
 
-// const row = new Row()
-// const menuGroup = row.appendCol({other: 12}, 'container d-flex flex-wrap gap-1')
-// const citem = new CategoryItem()
-// const citem2 = new CategoryItem({_id: 'test2', title: "category title 2"})
-// const citem3 = new CategoryItem({_id: 'test3', title: "category title 3"})
-// const citem4 = new CategoryItem({_id: 'test4', title: "category title 4"})
-// const citem5 = new CategoryItem({_id: 'test5', title: "category title 5"})
-// const citem6 = new CategoryItem({_id: 'test6', title: "category title 6"})
-// const citem7 = new CategoryItem({_id: 'test7', title: "category title 7"})
-// const citem8 = new CategoryItem({_id: 'test8', title: "category title 8"})
-// const citem9 = new CategoryItem({_id: 'test9', title: "category title 9"})
-// const citem10 = new CategoryItem({_id: 'test10', title: "category title 10"})
-// const citem11 = new CategoryItem({_id: 'test11', title: "category title 11"})
-// const citem12 = new CategoryItem({_id: 'test12', title: "category title 12"})
-// const citem13 = new CategoryItem({_id: 'test13', title: "category title 13"})
-// const citem14 = new CategoryItem({_id: 'test14', title: "category title 14"})
-// menuGroup.appendChild(citem.getItem())
-// menuGroup.appendChild(citem2.getItem())
-// menuGroup.appendChild(citem3.getItem())
-// menuGroup.appendChild(citem4.getItem())
-// menuGroup.appendChild(citem5.getItem())
-// menuGroup.appendChild(citem6.getItem())
-// menuGroup.appendChild(citem7.getItem())
-// menuGroup.appendChild(citem8.getItem())
-// menuGroup.appendChild(citem9.getItem())
-// menuGroup.appendChild(citem10.getItem())
-// menuGroup.appendChild(citem11.getItem())
-// menuGroup.appendChild(citem12.getItem())
-// menuGroup.appendChild(citem13.getItem())
-// menuGroup.appendChild(citem14.getItem())
-// document.body.appendChild(menuGroup)
-// citem.activeItem()
+const orderHandler = (evt) => {
+  const { products } = Utilities.getCart()
+  const { token } = Utilities.getCookiesObject()
+  const checkoutBtn = evt.target
+  checkoutBtn.disabled = true
+  Utilities.dealWithAPIs(
+    '/order-client',
+    'POST',
+    JSON.stringify({ cart: products }),
+    { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }
+  )
+    .then(({ msg }) => {
+      window.localStorage.removeItem('cart')
+      location.reload()
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+    .finally(() => {
+      checkoutBtn.disabled = false
+    })
+}
 
-// const pagination = new Pagination(10, location.hash.replace('#', ''))
+const initHeader = () => {
+  const user = window.sessionStorage.getItem('user')
+  Header.toggleProfile(user && JSON.parse(user))
+  const { token } = Utilities.getCookiesObject()
+  if (!user && token) {
+    Utilities.dealWithAPIs('/auth', 'GET', null, {
+      Authorization: `Bearer ${token}`
+    }).then(({ user }) => {
+      if (!user) {
+        return
+      }
+      window.sessionStorage.setItem('user', JSON.stringify(user))
+      Header.toggleProfile(user)
+    })
+  }
+  const cart = Utilities.getCart()
+  Header.updateCartCounter(cart.size())
+}
 
-// document.body.appendChild(pagination.getItem())
+const initCart = () => {
+  const cart = Utilities.getCart()
+  const pIds =  Object.keys(cart.products)
+  if(pIds.length === 0){
+    container.innerHTML = `<h1>Empty Cart :(</h1>`
+    return
+  }
+  const spinner = document.createElement('div')
+  spinner.className = `spinner-border text-primary`
+  spinner.innerHTML = `<span class="visually-hidden">Loading...</span>`
+  container.appendChild(spinner)
+  Utilities.dealWithAPIs(
+    '/validate-cart',
+    'POST',
+    JSON.stringify({ pIds: pIds }),
+    { 'Content-Type': 'application/json' }
+  )
+    .then((products) => {
+      initLayout(products)
+    })
+    .catch((err) => {
+      console.log(err)
+    }).finally(() => {
+      spinner.remove()
+    })
+}
+
+const initLayout = (products) => {
+  initItemsContainer(products)
+  initSummaryContainer(products)
+  container.appendChild(layoutTemp)
+}
+
+const initItemsContainer = (products) => {
+  if (products.length === 0) {
+    layoutTemp.innerHTML = `<h1>Empty cart :(</h1>`
+    return
+  }
+
+  const cart = Utilities.getCart()
+  const itemsContainer =
+    itemsContainerTemp.content.cloneNode(true).firstElementChild
+  for (const _product of products) {
+    const product = new Product(_product)
+    const cartItem = cartItemTemp.content.cloneNode(true).firstElementChild
+    const pImg = cartItem.querySelector('img.product-img')
+    pImg.src = product.getThumbnail()
+
+    const pTitle = cartItem.querySelector('h6.product-title')
+    pTitle.textContent = product.title
+
+    const pCategory = cartItem.querySelector('h6.category-title')
+    pCategory.textContent = product.category.title
+
+    const incrementBtn = cartItem.querySelector('button.increment-btn')
+    const decrementBtn = cartItem.querySelector('button.decrement-btn')
+    const deleteBtn = cartItem.querySelector('a.delete-item')
+
+    incrementBtn.onclick = incrementHandler.bind(cartItem, product)
+    decrementBtn.onclick = decrementHandler.bind(cartItem, product)
+    deleteBtn.onclick = deleteHandler.bind(cartItem, product)
+
+    const qtyInput = cartItem.querySelector('input[name="quantity"]')
+    qtyInput.value = cart.products[product.id]
+
+    const priceLabel = cartItem.querySelector('h6.price-text')
+    priceLabel.textContent = `${
+      product.displayPrice() * cart.products[product.id]
+    }$`
+
+    itemsContainer.appendChild(cartItem)
+  }
+
+  layoutTemp.appendChild(itemsContainer)
+}
+
+const initSummaryContainer = (products) => {
+  if (products.length === 0) {
+    return
+  }
+  const cart = Utilities.getCart()
+
+  const { itemsCount, total } = products.reduce(
+    (sumObj, _product) => {
+      const product = new Product(_product)
+      sumObj.total += product.displayPrice() * cart.products[product.id]
+      sumObj.itemsCount += cart.products[product.id]
+      return sumObj
+    },
+    { itemsCount: 0, total: 0 }
+  )
+
+  const summaryContainer = summaryTemp.content.cloneNode(true).firstElementChild
+
+  const itemsCountBadge = summaryContainer.querySelector(
+    'span.item-count-badge'
+  )
+  itemsCountBadge.textContent = itemsCount
+
+  const totalItemsPrice = summaryContainer.querySelector(
+    'div.total-items-price'
+  )
+  totalItemsPrice.textContent = `${total}$`
+
+  const shippingPrice = summaryContainer.querySelector('div.shipping-price')
+  shippingPrice.textContent = `10$`
+
+  const totalAmount = summaryContainer.querySelector('div.total-amount')
+  totalAmount.textContent = `${10 + total}$`
+
+  const checkoutBtn = summaryContainer.querySelector('button')
+  checkoutBtn.onclick = orderHandler
+
+  const { token } = Utilities.getCookiesObject()
+  if (!token) {
+    const loginBtn = document.createElement('button')
+    loginBtn.className = `btn btn-outline-primary`
+    loginBtn.textContent = 'Login to checkout'
+    loginBtn.onclick = openLoginModalHandler
+    checkoutBtn.replaceWith(loginBtn)
+  }
+
+  layoutTemp.appendChild(summaryContainer)
+}
+
+initHeader()
+initCart()

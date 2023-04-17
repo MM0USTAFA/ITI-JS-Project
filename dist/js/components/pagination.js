@@ -23,7 +23,7 @@ export default class CategoryItem {
       link.className = `page-link ${this.currentPage == page ? 'active' : ''}`.trim()
       link.dataset.bsPage = page
       link.textContent = page
-      link.onclick = this.pageClickedHandler.bind(link, page)
+      link.onclick = this.pageClickedHandler.bind(this)
       li.appendChild(link)
       list.appendChild(li)
     }
@@ -31,17 +31,15 @@ export default class CategoryItem {
   }
 
   activeItem(page) {
-    this._disactiveAll()
-    const pageItem = this._item.querySelector(`a[data-bs-page="${page}"]`)
+    const pageItem = this._item.querySelector(`[data-bs-page="${page}"]`)
     pageItem.classList.add('active')
   }
 
-  _disactiveAll() {
-    this._item.querySelectorAll('li a').forEach((link) => {
-      if (link.classList.contains('active')) {
-        link.classList.remove('active')
-      }
-    })
+  disactiveItem() {
+    const activeItem = this._item.querySelector('button.active')
+    if(activeItem){
+      activeItem.classList.remove('active')
+    }
   }
 
   getItem() {

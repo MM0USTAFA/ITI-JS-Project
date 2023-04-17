@@ -7,8 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>WoW Commerce</title>
   <link rel="stylesheet" href="dist/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="dist/css/style.css" />
   <script src="dist/js/bootstrap.bundle.min.js" defer></script>
+  <script src="dist/js/orders.js" type="module" defer></script>
 </head>
 
 <body class="min-vw-100 min-vh-100">
@@ -16,10 +16,7 @@
   <header class="p-3 mb-3 border-bottom">
     <div class="container">
       <div class="row">
-        <ul class="nav nav-pills col-9 col-sm-10">
-          <li class="nav-item">
-            <a href="index.html" class="nav-link" aria-current="page">Home</a>
-          </li>
+        <ul id="navigation-section" class="nav nav-pills col-9 col-sm-10">
           <li class="nav-item">
             <a href="shop.html" class="nav-link"> Shop </a>
           </li>
@@ -29,126 +26,94 @@
               <span class="badge text-bg-danger">0</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="orders.html" class="nav-link active">Orders</a>
-          </li>
-          <!-- Profile must not appear before login -->
-          <li class="nav-item">
-            <a href="profile.html" class="nav-link">Profile</a>
-          </li>
         </ul>
-        <div class="col-3 col-sm-2 text-end">
+        <div id="profile-section" class="col-3 col-sm-2 text-end">
           <a href="login.html" class="btn btn-outline-primary me-2">Log out</a>
         </div>
       </div>
     </div>
   </header>
 
-  <main>
-    <!-- TODO: Design order list item, shape inspired from bootstrap card, inspire more from internet-->
-    <!-- bootstrap card: https://getbootstrap.com/docs/5.3/components/card/ -->
-
-    <!-- TODO: Design orders pagination-->
-    <!-- bootstrap pagination: https://getbootstrap.com/docs/5.3/components/pagination/ -->
-
-    <h1 class="text-center">
+  <main class="container">
+    <h1 class="border-bottom w-75 pb-3 mb-3">
       <i class="fa-solid fa-cart-flatbed"></i>
-      Your orders
+      Orders
     </h1>
 
     <!-- Orders table -->
-    <div class="container">
-      <table class="table table-striped table-hover table-bordered">
-        <thead>
-          <tr>
-            <th scope="col">Order #</th>
-            <th scope="col">Date</th>
-            <th scope="col"># of items</th>
-            <th scope="col">Status</th>
-            <th scope="col">Total price</th>
-
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row"><a href="">#1</a></th>
-            <td>25-01-2023</td>
-            <td>3</td>
-            <td>Delivered</td>
-            <td>$250 <button class="btn btn-primary ">Order details</button></td>
-          </tr>
-          <tr>
-            <th scope="row"><a href="">#2</a></th>
-            <td>12-02-2023</td>
-            <td>2</td>
-            <td>Pending</td>
-            <td>$500</td>
-          </tr>
-          <tr>
-            <th scope="row"><a href="">#3</a></th>
-            <td>12-02-2023</td>
-            <td>5</td>
-            <td>Pending</td>
-            <td>$300</td>
-          </tr>
-          <tr>
-            <th scope="row"><a href="">#4</a></th>
-            <td>17-03-2023</td>
-            <td>1</td>
-            <td>Delivered</td>
-            <td>$100</td>
-          </tr>
-          <tr>
-            <th scope="row"><a href="">#5</a></th>
-            <td>25-03-2023</td>
-            <td>6</td>
-            <td>Delivered</td>
-            <td>$850</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    
 
 
   </main>
 
-  <nav aria-label="...">
-    <ul class="pagination justify-content-center">
-      <li class="page-item disabled">
-        <span class="page-link">Previous</span>
-      </li>
-      <li class="page-item">
-        <a class="page-link" href="#">1</a>
-      </li>
-      <!-- <li class="page-item active" aria-current="page">
-          <span class="page-link">2</span>
-        </li>
-        <li class="page-item">
-          <a class="page-link" href="#">3</a>
-        </li> -->
-      <li class="page-item disabled">
-        <a class="page-link" href="#">Next</a>
-      </li>
-    </ul>
-  </nav>
+  <div id="order-details-modal" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body px-0">
+          <p class="lead fw-bold mb-5 px-3" style="color: #f37a27;">Purchase Reciept</p>
 
+          <div class="row p-3">
+            <div class="col mb-3">
+              <p class="small text-muted mb-1">Date</p>
+              <p id="order-date"></p>
+            </div>
+            <div class="col mb-3">
+              <p class="small text-muted mb-1">Order No.</p>
+              <p id="order-number"></p>
+            </div>
+          </div>
 
-  <!-- Footer of the page-->
-  <!-- <footer class="text-muted py-5">
-      <div class="container">
-        <p class="float-end mb-1">
-          <a href="#">Back to top</a>
-        </p>
-        <p class="mb-1">
-          Album example is &copy; Bootstrap, but please download and customize
-          it for yourself!
-        </p>
-        <p class="mb-0">
-          New to Bootstrap? <a href="/">Visit the homepage</a> or read our
-          <a href="../getting-started/introduction/">getting started guide</a>.
-        </p>
+          <div id="items-container" class="px-5 py-4" style="background-color: #f2f2f2;">
+          </div>
+
+          <div class="row my-4 px-5">
+            <div class="col-md-4 offset-md-8 col-lg-3 offset-lg-9">
+              <p id="total-price" class="lead fw-bold mb-0" style="color: #f37a27;"></p>
+            </div>
+          </div>
+        </div>
       </div>
-    </footer> -->
+    </div>
+  </div>
+
+
+  <template id="orders-table">
+    <table class="table table-striped table-hover table-bordered text-center align-middle">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col"># of products</th>
+          <th scope="col">Status</th>
+          <th scope="col">Total price</th>
+          <th scope="col">View</th>
+        </tr>
+      </thead>
+      <tbody>
+    
+      </tbody>
+    </table>
+  </template>
+
+  <template id="order-item">
+    <tr>
+      <th scope="row"></th>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td> <button class="btn btn-primary btn-sm"><i class="fa fa-eye"></i></button></td>
+    </tr>
+  </template>
+
+  <template id="product-item">
+    <div class="row">
+      <div class="col-md-8 col-lg-9">
+        <p id="product-title"></p>
+      </div>
+      <div class="col-md-4 col-lg-3">
+        <p id="product-price"></p>
+      </div>
+    </div>
+  </template>
 
   <script src="https://kit.fontawesome.com/c474ed5261.js" crossorigin="anonymous"></script>
 </body>
