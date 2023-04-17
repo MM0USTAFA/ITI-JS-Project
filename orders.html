@@ -18,9 +18,6 @@
       <div class="row">
         <ul id="navigation-section" class="nav nav-pills col-9 col-sm-10">
           <li class="nav-item">
-            <a href="index.html" class="nav-link" aria-current="page">Home</a>
-          </li>
-          <li class="nav-item">
             <a href="shop.html" class="nav-link"> Shop </a>
           </li>
           <li class="nav-item">
@@ -48,6 +45,36 @@
 
 
   </main>
+
+  <div id="order-details-modal" class="modal fade" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body px-0">
+          <p class="lead fw-bold mb-5 px-3" style="color: #f37a27;">Purchase Reciept</p>
+
+          <div class="row p-3">
+            <div class="col mb-3">
+              <p class="small text-muted mb-1">Date</p>
+              <p id="order-date"></p>
+            </div>
+            <div class="col mb-3">
+              <p class="small text-muted mb-1">Order No.</p>
+              <p id="order-number"></p>
+            </div>
+          </div>
+
+          <div id="items-container" class="px-5 py-4" style="background-color: #f2f2f2;">
+          </div>
+
+          <div class="row my-4 px-5">
+            <div class="col-md-4 offset-md-8 col-lg-3 offset-lg-9">
+              <p id="total-price" class="lead fw-bold mb-0" style="color: #f37a27;"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
   <template id="orders-table">
@@ -77,17 +104,15 @@
     </tr>
   </template>
 
-  <template id="pagination-layout">
-    <nav aria-label="...">
-      <ul class="pagination justify-content-center">
-      </ul>
-    </nav>
-  </template>
-
-  <template id="page-item">
-    <li class="page-item">
-      <button class="page-link"></button>
-    </li>
+  <template id="product-item">
+    <div class="row">
+      <div class="col-md-8 col-lg-9">
+        <p id="product-title"></p>
+      </div>
+      <div class="col-md-4 col-lg-3">
+        <p id="product-price"></p>
+      </div>
+    </div>
   </template>
 
   <script src="https://kit.fontawesome.com/c474ed5261.js" crossorigin="anonymous"></script>

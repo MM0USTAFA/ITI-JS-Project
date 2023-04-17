@@ -127,14 +127,17 @@ const orderHandler = (evt) => {
     'POST',
     JSON.stringify({ cart: products }),
     { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }
-  ).then(({msg}) => {
-    window.localStorage.removeItem('cart')
-    location.reload()
-  }).catch(err => {
-    console.log(err);
-  }).finally(()=>{
-    checkoutBtn.disabled = false
-  })
+  )
+    .then(({ msg }) => {
+      window.localStorage.removeItem('cart')
+      location.reload()
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+    .finally(() => {
+      checkoutBtn.disabled = false
+    })
 }
 
 const initHeader = () => {
@@ -154,6 +157,33 @@ const initHeader = () => {
   }
   const cart = Utilities.getCart()
   Header.updateCartCounter(cart.size())
+}
+
+const initCart = () => {
+  const cart = Utilities.getCart()
+  const pIds =  Object.keys(cart.products)
+  if(pIds.length === 0){
+    container.innerHTML = `<h1>Empty Cart :(</h1>`
+    return
+  }
+  const spinner = document.createElement('div')
+  spinner.className = `spinner-border text-primary`
+  spinner.innerHTML = `<span class="visually-hidden">Loading...</span>`
+  container.appendChild(spinner)
+  Utilities.dealWithAPIs(
+    '/validate-cart',
+    'POST',
+    JSON.stringify({ pIds: pIds }),
+    { 'Content-Type': 'application/json' }
+  )
+    .then((products) => {
+      initLayout(products)
+    })
+    .catch((err) => {
+      console.log(err)
+    }).finally(() => {
+      spinner.remove()
+    })
 }
 
 const initLayout = (products) => {
@@ -254,21 +284,5 @@ const initSummaryContainer = (products) => {
   layoutTemp.appendChild(summaryContainer)
 }
 
-const getCartProductsIds = () => {
-  const cart = Utilities.getCart()
-  return Object.keys(cart.products)
-}
-
 initHeader()
-Utilities.dealWithAPIs(
-  '/validate-cart',
-  'POST',
-  JSON.stringify({ pIds: getCartProductsIds() }),
-  { 'Content-Type': 'application/json' }
-)
-  .then((products) => {
-    initLayout(products)
-  })
-  .catch((err) => {
-    console.log(err)
-  })
+initCart()
