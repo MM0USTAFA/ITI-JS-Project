@@ -11,21 +11,15 @@ import Header from './utils/header.js'
 const container = document.querySelector('main.container')
 
 const addToCartHandler = function (evt) {
-  const btn = evt.target
-  const cart = (window.localStorage.getItem('cart') &&
-    JSON.parse(window.localStorage.getItem('cart'))) || {
-    products: {}
-  }
-  cart.size = function () {
-    return Object.keys(this.products).length
-  }
+  const cart = Utilities.getCart()
   cart.products[this.id] = +cart.products[this.id] + 1 || 1
   Header.updateCartCounter(cart.size())
   window.localStorage.setItem('cart', JSON.stringify(cart))
 }
 
-const showDetailsHandler = function () {
-  const { product } = this
+const showDetailsHandler = function() {
+  console.log(this);
+  const product  = this.product
   const pmb = new ProductModalBody(
     product,
     addToCartHandler,
@@ -81,6 +75,17 @@ const categoryClickedHandler = function (e) {
 const initHeader = () => {
   const user = window.sessionStorage.getItem('user')
   Header.toggleProfile(user && JSON.parse(user))
+  const {token} = Utilities.getCookiesObject()
+  if(!user && token){
+    Utilities.dealWithAPIs('/auth', "GET", null, {'Authorization': `Bearer ${token}`} ).then(({user}) => {
+      if(!user){
+        return
+      }
+      console.log(user);
+      window.sessionStorage.setItem('user', JSON.stringify(user))
+      Header.toggleProfile(user)
+    })
+  }
   const cart = (window.localStorage.getItem('cart') &&
     JSON.parse(window.localStorage.getItem('cart'))) || {
     products: {}

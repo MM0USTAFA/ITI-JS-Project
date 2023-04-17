@@ -37,13 +37,13 @@ export default class Utilities {
   }
 
   static getCookiesObject() {
-    return document.cookie.split(';').reduce((cookieObject, currentCookie) => {
+    return document.cookie && document.cookie.split(';').reduce((cookieObject, currentCookie) => {
       const [key, value] = currentCookie.split('=')
       cookieObject[decodeURIComponent(key.trim())] = decodeURIComponent(
         value.trim()
       )
       return cookieObject
-    }, {})
+    }, {}) || {}
   }
 
   static getCart() {

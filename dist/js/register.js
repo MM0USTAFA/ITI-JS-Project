@@ -18,13 +18,16 @@ const submitEventHandler = (ev) => {
         </div>`
       setTimeout(() => {
         location.replace('login.html')
-      }, 2000)
+      }, 500)
     })
     .catch((err) => {
       if (err instanceof Array) {
         console.log(err)
         for (const { param, msg } of err) {
           const element = form.querySelector(`input[name="${param}"]`)
+          if(element.nextElementSibling){
+            return
+          }
           element.insertAdjacentHTML(
             'afterend',
             `<div class="invalid-feedback d-block">${msg}</div>`

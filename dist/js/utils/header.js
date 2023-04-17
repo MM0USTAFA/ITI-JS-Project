@@ -17,9 +17,6 @@ export default class Header {
     profileEl.className =
       'd-block link-dark text-decoration-none dropdown-toggle show'
     profileEl.dataset.bsToggle = 'dropdown'
-    profileEl.className =
-      'd-block link-dark text-decoration-none dropdown-toggle show'
-    profileEl.dataset.bsToggle = 'dropdown'
 
     const profileImg = document.createElement('img')
     profileImg.src = user.getAvatar()
